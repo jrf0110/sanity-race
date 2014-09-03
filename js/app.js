@@ -1,11 +1,12 @@
 window._ = require('lodash');
+
 var Two = require('two.js');
 var TWEEN = require('tween.js');
 var utils = require('./lib/utils');
 var app = window.app = window.app || {};
 var uInput = window.uInput = require('./lib/user-input');
 
-var config = {
+var config = window.config = {
   // Rotation limiter increases the alpha value from user input
   // as a factor of rl
   rl: 5
@@ -17,16 +18,14 @@ var config = {
 , roadWidth: 250
 
   // Number of vertices in the track
-, nVertices: 8
+, nVertices: 4
 
-  // How many of nVertices will be beyond the viewport?
-  // Should be ~= n / 2 because two.js is doing some really 
-  // funky shit with vertex V0's y coordinate. n/2 sufficiently
-  // hides said funky ass behavior
+  // Number of vertices outside the track
+  // NOTE: needs to be an even number (n/2 for top, n/2 for bottom)
 , nOutsideVertices: 2
 
   // Max horizontal distance between two vertices
-, variance: 200
+, variance: 100
 };
 
 app.views = {
@@ -59,9 +58,11 @@ var player = Object.create({
   }
 });
 
-utils.domready( function(){
-  var step = window.innerHeight / ( config.nVertices - config.nOutsideVertices );
+var getStep = function(){
+  return window.innerHeight / ( config.nVertices - config.nOutsideVertices );
+};
 
+utils.domready( function(){
   var two = window.two = new Two({
     fullscreen: true
   , type: Two.Types.svg
@@ -72,7 +73,7 @@ utils.domready( function(){
   var points = utils.range( config.nVertices ).map( function( x, i ){
     var anchor = {
       x: utils.random( prevX - (config.variance / 2), prevX + (config.variance / 2) )
-    , y: step * (i - (config.nOutsideVertices / 2) )
+    , y: getStep() * (i - (config.nOutsideVertices / 2) )
     };
 
     prevX = anchor.x;
@@ -96,7 +97,7 @@ utils.domready( function(){
   };
 
   var getTweenFromVertex = function( v, i, vertices ){
-    var to;
+    var to, step = getStep();
 
     if ( i === vertices.length - 1 ){
       to = { x: v.x, y: v.y + step };
@@ -109,7 +110,7 @@ utils.domready( function(){
 
     return new TWEEN.Tween({ x: v.x, y: v.y })
       .to( to, 250 )
-      .easing( TWEEN.Easing.Linear.None )
+      // .easing( TWEEN.Easing.Linear.None )
       .onUpdate( function(){
         v.y = this.y;
       })
@@ -132,7 +133,7 @@ utils.domready( function(){
       var prevX = roadCurves[0].vertices[0].x;
       var anchor = {
         x: utils.random( prevX - (config.variance / 2), prevX + (config.variance / 2) )
-      , y: step * (0 - (config.nOutsideVertices / 2) )
+      , y: getStep() * (0 - (config.nOutsideVertices / 2) )
       };
 
       tweens = [];
@@ -149,9 +150,8 @@ utils.domready( function(){
 
     player.render();
     two.update();
-    TWEEN.update( t );
+    TWEEN.update();
   };
-
 
   utils.dom(document.body).append( player.$el );
 

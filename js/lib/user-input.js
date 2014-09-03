@@ -21,20 +21,11 @@ var uInput = {
   hInput: 0
 , vInput: 0
 , currT:  0
-
-, baseRotation: 0
-, numDegrees: 20
+, rotationMultiplier: 10
 
 , onDeviceOrientation: function( e ){
-    var rotation = e.alpha;
-    if ( rotation > 180 ){
-      rotation = Math.min( 360 % rotation, this.numDegrees / 2 );
-    } else {
-      rotation = Math.max( -1 * this.numDegrees / 2, rotation * -1 );
-    }
-
-    this.hInput = rotation / ( this.numDegrees / 2 );
-    this.emit( 'horizontal', e.alpha );
+    this.hInput = Math.sin( ( Math.PI * e.alpha * this.rotationMultiplier ) / 180 ) * -1;
+    this.emit( 'horizontal', this.hInput );
   }
 
 , applyInputState: function( direction ){
