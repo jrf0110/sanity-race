@@ -1,7 +1,3 @@
-var fs = require('fs');
-var async = require('async');
-var childProcess = require('child_process');
-
 module.exports = function( grunt ){
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
