@@ -5,7 +5,7 @@ var utils = module.exports = _.extend( {}, _ );
 utils.domready  = $;
 utils.dom       = $;
 
-utils.key = require('MouseTrap');
+utils.key = require('mousetrap');
 
 utils.easing = {
   easeOutQuad: function( t, b, c, d ){
