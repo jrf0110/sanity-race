@@ -1,0 +1,49 @@
+////////////////////
+// Steering Wheel //
+////////////////////
+
+.steering-wheel {
+  position: relative;
+  width: @steering-wheel-size;
+  height: @steering-wheel-size;
+  border-radius: @steering-wheel-size;
+  border: solid 5px @steering-wheel-color;
+  text-align: center;
+  overflow: hidden;
+
+  // Make the rotation smooth
+  transition: 0.05s linear transform;
+
+  &:before {
+    content: "";
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    border: solid 3px @steering-wheel-color;
+    margin-top: @steering-wheel-size / 4;
+    background: #fff;
+    z-index: 1;
+  }
+
+  .support {
+    width: 3px;
+    position: absolute;
+    background: #000;
+    height: 100%%;
+    top: 0;
+
+    &.support-1 {
+      left: 45px;
+      // .transform( rotate(-45deg) );
+      transform: rotate(-45deg)
+    }
+
+    &.support-2 {
+      right: 45px;
+      // .transform( rotate(45deg) );
+      transform: rotate(45deg)
+    }
+  }
+}

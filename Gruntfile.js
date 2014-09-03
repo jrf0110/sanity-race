@@ -9,7 +9,7 @@ module.exports = function( grunt ){
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-shell');
   var pkg = require('./package.json');
 
   var config = {
@@ -46,8 +46,8 @@ module.exports = function( grunt ){
 
   , shell: {
       buildJs: {
-        options: { stdout: true }
-      , command: 'make javascript'
+        options: { stdout: false }
+      , command: 'browserify -e js/app.js > dist/app.js'
       }
     }
 
@@ -84,6 +84,7 @@ module.exports = function( grunt ){
   grunt.registerTask( 'default', [
     'jshint'
   , 'less'
+  , 'shell:buildJs'
   , 'connect'
   , 'watch'
   ]);
@@ -91,5 +92,6 @@ module.exports = function( grunt ){
   grunt.registerTask( 'build', [
     'jshint'
   , 'less'
+  , 'shell:buildJs'
   ]);
 };

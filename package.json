@@ -1,0 +1,40 @@
+{
+  "name": "sanity-race",
+  "version": "1.0.0",
+  "description": "Vidya' game I'm workin' on",
+  "main": "Gruntfile.js",
+  "dependencies": {
+    "browserify": "^4.1.9",
+    "browserify-shim": "^3.6.0",
+    "grunt": "^0.4.2",
+    "grunt-browserify": "^2.1.0",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-contrib-connect": "^0.5.0",
+    "grunt-contrib-copy": "^0.4.1",
+    "grunt-contrib-jshint": "^0.7.2",
+    "grunt-contrib-less": "^0.8.3",
+    "grunt-contrib-uglify": "^0.2.7",
+    "grunt-contrib-watch": "^0.5.3",
+    "grunt-shell": "^1.0.1",
+    "jquery": "^2.1.1",
+    "lodash": "^2.4.1",
+    "loglog": "^0.1.4",
+    "mousetrap": "0.0.1",
+    "tween.js": "^0.14.0",
+    "two.js": "^0.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jrf0110/sanity-race.git"
+  },
+  "author": "John Fawcett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrf0110/sanity-race/issues"
+  },
+  "homepage": "https://github.com/jrf0110/sanity-race"
+}
