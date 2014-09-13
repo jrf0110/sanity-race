@@ -22,9 +22,13 @@ var uInput = {
 , vInput: 0
 , currT:  0
 , rotationMultiplier: 10
+// , calibration: 0
+, calibration: 0.5
 
 , onDeviceOrientation: function( e ){
-    this.hInput = Math.sin( ( Math.PI * e.alpha * this.rotationMultiplier ) / 180 ) * -1;
+    this.hInput = Math.sin(
+      ( Math.PI * ( e.alpha + this.calibration ) * this.rotationMultiplier ) / 180
+    ) * -1;
     this.emit( 'horizontal', this.hInput );
   }
 
@@ -39,39 +43,47 @@ var uInput = {
   }
 
 , onLeftInputDown: function(){
-    if ( !this.applyInputStateInterval ){
-      this.currT = utils.easing.timings.easeOutQuad(
-        this.hInput, 0, -1, 2000
-      );
+    this.hInput = -1;
+    this.emit( 'horizontal', this.hInput );
+    // if ( !this.applyInputStateInterval ){
+    //   this.currT = utils.easing.timings.easeOutQuad(
+    //     this.hInput, 0, -1, 2000
+    //   );
 
-      this.applyInputStateInterval = setInterval(
-        this.applyInputState.bind( this, 'left' ), 10
-      );
-    }
+    //   this.applyInputStateInterval = setInterval(
+    //     this.applyInputState.bind( this, 'left' ), 10
+    //   );
+    // }
   }
 
 , onLeftInputUp: function(){
-    if ( this.applyInputStateInterval ){
-      clearInterval( this.applyInputStateInterval );
-    }
+    this.hInput = 0;
+    this.emit( 'horizontal', this.hInput );
+    // if ( this.applyInputStateInterval ){
+    //   clearInterval( this.applyInputStateInterval );
+    // }
   }
 
 , onRightInputDown: function(){
-    if ( !this.applyInputStateInterval ){
-      this.currT = utils.easing.timings.easeOutQuad(
-        this.hInput, 0, 1, 2000
-      );
+    this.hInput = 1;
+    this.emit( 'horizontal', this.hInput );
+    // if ( !this.applyInputStateInterval ){
+    //   this.currT = utils.easing.timings.easeOutQuad(
+    //     this.hInput, 0, 1, 2000
+    //   );
 
-      this.applyInputStateInterval = setTimeout(
-        this.applyInputState.bind( this, 'right' ), 10
-      );
-    }
+    //   this.applyInputStateInterval = setTimeout(
+    //     this.applyInputState.bind( this, 'right' ), 10
+    //   );
+    // }
   }
 
 , onRightInputUp: function(){
-    if ( this.applyInputStateInterval ){
-      clearInterval( this.applyInputStateInterval );
-    }
+    this.hInput = 0;
+    this.emit( 'horizontal', this.hInput );
+    // if ( this.applyInputStateInterval ){
+    //   clearInterval( this.applyInputStateInterval );
+    // }
   }
 };
 
