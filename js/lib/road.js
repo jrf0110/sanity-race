@@ -14,32 +14,6 @@ module.exports = function( options ){
     return window.innerHeight / ( options.nVertices - options.nOutsideVertices );
   };
 
-  var numTweensComplete = 0;
-  var onTweenComplete = function(){
-    numTweensComplete++;
-  };
-
-  var getTweenFromVertex = function( v, i, vertices ){
-    var to, step = getStep();
-
-    if ( i === vertices.length - 1 ){
-      to = { x: v.x, y: v.y + step };
-    } else {
-      to = {
-        x: vertices[ i + 1 ].x
-      , y: vertices[ i + 1 ].y
-      };
-    }
-
-    return new TWEEN.Tween({ x: v.x, y: v.y })
-      .to( to, 250 )
-      // .easing( TWEEN.Easing.Linear.None )
-      .onUpdate( function(){
-        v.y = this.y;
-      })
-      .onComplete( onTweenComplete );
-  };
-
   return Object.create({
     init: function(){
       this.roadCurves = utils.range( options.nCurves ).map( function( x ){
@@ -52,44 +26,18 @@ module.exports = function( options ){
         );
       }.bind( this ));
 
-      this.tweens = [];
-
       this.roadCurves.forEach( function( curve, i ){
         curve.noFill().linewidth = 10; 
         curve.stroke = 'tomato';
         options.renderer.add( curve );
-
-        // this.tweens = this.tweens.concat( curve.vertices.map( getTweenFromVertex ) );
       }.bind( this ) );
 
       this.bow(0);
 
-      // utils.invoke( this.tweens, 'start' );
-
       return this;
     }
 
-    // Just re-updates the vertices after the tweens are complete
-    // So most of the updating is actually done in TWEEN.update()
   , update: function(){
-      // if ( numTweensComplete === this.tweens.length ){
-      //   var prevX = this.roadCurves[0].vertices[0].x;
-      //   var anchor = {
-      //     x: utils.random( prevX - (options.variance / 2), prevX + (options.variance / 2) )
-      //   , y: getStep() * (0 - (options.nOutsideVertices / 2) )
-      //   };
-
-      //   this.tweens = [];
-      //   this.roadCurves.forEach( function( curve, i ){
-      //     curve.vertices.pop();
-      //     curve.vertices.unshift( new Two.Anchor( anchor.x + (i * options.width), anchor.y ) );
-      //     this.tweens = this.tweens.concat( curve.vertices.map( getTweenFromVertex ) );
-      //   }.bind( this ));
-
-      //   utils.invoke( this.tweens, 'start' );
-
-      //   numTweensComplete = 0;
-      // }
     }
 
 
