@@ -9,7 +9,7 @@ module.exports = {
 , roadWidth: 250
 
   // Number of vertices in the track
-, nVertices: 12
+, nVertices: 48
 
   // Number of vertices outside the track
   // NOTE: needs to be an even number (n/2 for top, n/2 for bottom)

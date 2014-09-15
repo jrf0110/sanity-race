@@ -20,3 +20,31 @@ utils.easing = {
     }
   }
 };
+
+[
+  'flatten'
+].forEach( function( fn ){
+  Object.defineProperty( Array.prototype, fn, {
+    enumerable: false
+  , value: function(){
+      return _[ fn ].apply( null, [ this ].concat(
+        Array.prototype.slice.call( arguments, 1 )
+      ));
+    }
+  });
+});
+
+utils.bowPoints = function( points, amount, originX ){
+  originX = originX || ( window.innerWidth / 2 );
+
+  // Avoid AA issues
+  originX = parseInt( originX );
+
+  points.forEach( function( vertex, vi ){
+    var x = Math.pow( ( vi * ( 1 / points.length ) ) - 0.5, 2 );
+    x *= amount * 4;
+    x += originX;
+
+    vertex.x = x;
+  });
+};
