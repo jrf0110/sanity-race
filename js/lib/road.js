@@ -59,21 +59,21 @@ module.exports = function( options ){
       this.roadCenter.linewidth = options.width - options.lineRoadOverhang - options.lineWidth;
     }
 
-    , initRoadLines: function(){
-        var gutter = - 10;
-        var length = two.height / ( options.nVertices + gutter );
-        this.lines = [];
-        utils.range( options.nRoadLines ).forEach( function( i ){
-          var dash = two.makeLine( 0, - length, 0, length );
+  , initRoadLines: function(){
+      var gutter = - 10;
+      var length = two.height / ( options.nVertices + gutter );
+      this.lines = [];
+      utils.range( options.nRoadLines ).forEach( function( i ){
+        var dash = two.makeLine( 0, - length, 0, length );
 
-          dash.noFill().stroke = '#fff';
-          dash.linewidth = 3;
-          dash.pct = i / ( options.nRoadLines - 1 );
+        dash.noFill().stroke = '#fff';
+        dash.linewidth = 3;
+        dash.pct = i / ( options.nRoadLines - 1 );
 
-          dash.translation.copy( this.points[i] ).addSelf( this.roadCenter.translation );
-          this.lines.push( dash );
-        }.bind( this ));
-      }
+        dash.translation.copy( this.points[i] ).addSelf( this.roadCenter.translation );
+        this.lines.push( dash );
+      }.bind( this ));
+    }
 
   , update: function( frameCount, timeDelta ){
       this.updateCenterLines( frameCount, timeDelta );
