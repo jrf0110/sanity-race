@@ -48,3 +48,10 @@ utils.bowPoints = function( points, amount, originX ){
     vertex.x = x;
   });
 };
+
+utils.mod = function( v, l ){
+  while ( v < 0 ){
+    v += l;
+  }
+  return v % l;
+};

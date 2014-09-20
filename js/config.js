@@ -13,7 +13,7 @@ module.exports = {
 
   // Number of vertices outside the track
   // NOTE: needs to be an even number (n/2 for top, n/2 for bottom)
-, nOutsideVertices: 4
+, nOutsideVertices: 16
 
   // Max horizontal distance between two vertices
 , variance: 150

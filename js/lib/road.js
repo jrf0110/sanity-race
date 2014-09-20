@@ -7,20 +7,27 @@ module.exports = function( options ){
   }
 
   utils.defaults( options, {
-    nRoadLines: 8
+    nRoadLines:       8
+  , roadColor:        '#555'
+  , width:            250
+  , lineRoadOverhang: 16
+  , lineColor:        'yellow'
+  , lineWidth:        16
+  , velocity:         0.0125
   });
 
+  var two = options.renderer;
+
   var getStep = function(){
-    return window.innerHeight / ( options.nVertices - options.nOutsideVertices );
+    return two.height / ( options.nVertices - options.nOutsideVertices );
   };
 
-  var getRoadLineStep = function( nVertices, nOutside ){
-    return window.innerHeight / ( nVertices - nOutside );
-  };
+  // Cached variables to use within the animation loop.
+  var a = new Two.Vector(), b = new Two.Vector();
 
   return Object.create({
     init: function(){
-      this.initMainPolygon();
+      this.initMainRoad();
       this.initRoadLines();
 
       this.bow(0);
@@ -28,84 +35,74 @@ module.exports = function( options ){
       return this;
     }
 
-  , initMainPolygon: function(){
-      this.points = [ 1, 2 ].map( function( x ){
-        return utils.range( options.nVertices ).map( function( a ){
-          return new Two.Anchor( 0, getStep() * (a - (options.nOutsideVertices / 2) ) );
-        });
-      }.bind( this ));
-
-      // Reverse the second side to make the points line up more nicely
-      var pPoints = [
-        this.points[0], this.points[1].slice().reverse()
-      ].flatten();
-
-      this.points = this.points.flatten();
-      this.polygon = new Two.Polygon( pPoints, true, true );
-
-      this.polygon.fill       = '#555';
-      this.polygon.linewidth  = 10;
-      this.polygon.stroke     = 'yellow';
-
-      options.renderer.add( this.polygon );
-    }
-
-  , initRoadLines: function(){
-      this.rli = 0;
-      this.centerLines = new Two.Group();
-
-      var center = window.innerWidth / 2;
-      var step = getRoadLineStep( options.nRoadLines * 4, 4 );
-
-      this.centerLinePoints = utils.range(
-        // 3 points per line, 1 more for spacing
-        // options.nRoadLines * ( 3 + 1 )
-        options.nVertices
-      ).map( function( i ){
-        return new Two.Anchor( center, getStep() * (i - (options.nOutsideVertices / 2) ) );
+  , initMainRoad: function(){
+      this.points = utils.range( options.nVertices ).map( function( a ){
+        return new Two.Anchor(
+          parseInt( two.width / 2 )
+        , parseInt( getStep() * (a - (options.nOutsideVertices / 2) ) )
+        );
       });
 
-      this.centerLinePoints.forEach( function( vertex, i, points ){
-        if ( i % 4  !== 0 ) return;
-
-        var line = new Two.Polygon( points.slice( i, i + 3 ) );
-        line.noFill();
-        line.lineWidth = 6;
-        line.stroke = 'yellow';
-
-        this.centerLines.add( line );
+      [ 'roadOverhang', 'roadSideLines', 'roadCenter' ].forEach( function( name ){
+        var curve = this[ name ] = two.makeCurve( this.points, true );
+        curve.translation.set( 0, two.height/ 2 );
+        curve.noFill();
       }.bind( this ));
 
-      options.renderer.add( this.centerLines );
+      this.roadOverhang.stroke = options.roadColor;
+      this.roadOverhang.linewidth = options.width;
+
+      this.roadSideLines.stroke = options.lineColor;
+      this.roadSideLines.linewidth = options.width - options.lineRoadOverhang;
+
+      this.roadCenter.stroke = options.roadColor;
+      this.roadCenter.linewidth = options.width - options.lineRoadOverhang - options.lineWidth;
     }
 
-  , update: function(){
-      var step = getStep();
-      this.centerLinesPoints.forEach( function( vertex, vi, points ){
-        vertex.y = step * (vi - (options.nOutsideVertices / 2) );
-        vertex.y *= this.rli * 2
-      });
+    , initRoadLines: function(){
+        var gutter = - 10;
+        var length = two.height / ( options.nVertices + gutter );
+        this.lines = [];
+        utils.range( options.nRoadLines ).forEach( function( i ){
+          var dash = two.makeLine( 0, - length, 0, length );
 
-      if ( ++this.rli === 4 ) this.rli = 0;
+          dash.noFill().stroke = '#fff';
+          dash.linewidth = 3;
+          dash.pct = i / ( options.nRoadLines - 1 );
+
+          dash.translation.copy( this.points[i] ).addSelf( this.roadCenter.translation );
+          this.lines.push( dash );
+        }.bind( this ));
+      }
+
+  , update: function( frameCount, timeDelta ){
+      this.updateCenterLines( frameCount, timeDelta );
+    }
+
+  , updateCenterLines: function( frameCount, timeDelta ){
+      if ( !timeDelta ){
+        return;
+      }
+
+      var line;
+      for ( var i = 0, l = this.lines.length; i < l; ++i ){
+        line = this.lines[i];
+        // Assign the calculation of the vector on the road to `a`
+        this.roadCenter.getPointAt( line.pct, a );
+        // Get an arbitrary vector right behind `a` in order to get the
+        // angle for the rotation of the line.
+        this.roadCenter.getPointAt( line.pct - 0.01, b );
+        line.translation.copy( a ).addSelf( this.roadCenter.translation );
+        line.rotation = Two.Utils.angleBetween( a, b ) + Math.PI / 2;
+
+        line.pct = utils.mod( line.pct + options.velocity, 1 );
+      }
     }
 
 
   , bow: function( amount ){
       this.bowAmount = amount;
-
-      utils.bowPoints(
-        this.points.slice( 0, this.points.length / 2 )
-      , amount
-      , ( window.innerWidth / 2 ) - ( options.width / 2 )
-      );
-
-      utils.bowPoints(
-        this.points.slice( this.points.length / 2 )
-      , amount
-      , ( window.innerWidth / 2 ) - ( options.width / 2 ) + options.width
-      );
-
-      utils.bowPoints( this.centerLinePoints, amount );
+      utils.bowPoints( this.points, amount );
     }
   }).init();
 };

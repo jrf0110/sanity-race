@@ -33,17 +33,11 @@ utils.domready( function(){
     app.road.bow( value );
   });
 
-  var tick = function( t ){
-    requestAnimationFrame( tick );
-
+  two.bind('update', function( frameCount, timeDelta ){
     app.player.x += (uInput.hInput * config.hSpeed) + course.getForce();
 
-    app.road.update();
-    app.player.update();
-
-    two.update();
+    app.road.update( frameCount, timeDelta );
+    app.player.update( frameCount, timeDelta );
     TWEEN.update();
-  };
-
-  requestAnimationFrame( tick );
+  }).play();
 });
