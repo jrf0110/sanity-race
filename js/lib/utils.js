@@ -21,6 +21,33 @@ utils.easing = {
   }
 };
 
+var oCreate = Object.create;
+Object.create = function(){
+  var ctrs, objs = Array.prototype.slice.call( arguments );
+
+  ctrs = objs.filter( function( o ){
+    return typeof o === 'function';
+  });
+
+  objs = objs.filter( function( o ){
+    return typeof o === 'object';
+  });
+
+  ctrs.forEach( function( ctr ){
+    objs.push( ctr.prototype );
+  });
+
+  var obj = utils.extend.apply( null, objs );
+  obj = oCreate( obj );
+
+  ctrs.forEach( function( ctr ){
+    ctr.call( obj );
+  });
+
+  return obj;
+};
+
+// Functions from lodash to put on the Array prototype
 [
   'flatten'
 ].forEach( function( fn ){
@@ -40,13 +67,13 @@ utils.bowPoints = function( points, amount, originX ){
   // Avoid AA issues
   originX = parseInt( originX );
 
-  points.forEach( function( vertex, vi ){
-    var x = Math.pow( ( vi * ( 1 / points.length ) ) - 0.5, 2 );
+  for ( var i = 0, l = points.length, x; i < l; ++i ){
+    x = Math.pow( ( i * ( 1 / points.length ) ) - 0.5, 2 );
     x *= amount * 4;
     x += originX;
 
-    vertex.x = x;
-  });
+    points[i].x = x;
+  }
 };
 
 utils.mod = function( v, l ){

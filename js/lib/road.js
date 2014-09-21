@@ -15,6 +15,7 @@ module.exports = function( options ){
   , lineWidth:        16
   , velocity:         0.0125
   , gutter:          -50
+  , distanceOut:      200
   });
 
   var two = options.renderer;
@@ -37,12 +38,16 @@ module.exports = function( options ){
     }
 
   , initMainRoad: function(){
-      this.points = utils.range( options.nVertices ).map( function( a ){
-        return new Two.Anchor(
-          parseInt( two.width / 2 )
-        , parseInt( getStep() * (a - (options.nOutsideVertices / 2) ) )
+      var center = parseInt( two.width / 2 );
+      var step = ( two.height + (options.distanceOut * 2) ) / options.nVertices;
+
+      this.points = [];
+
+      for ( var i = 0; i < options.nVertices; i++ ){
+        this.points.push(
+          new Two.Anchor( center, -options.distanceOut + parseInt( step * i ) )
         );
-      });
+      }
 
       [ 'roadOverhang', 'roadSideLines', 'roadCenter' ].forEach( function( name ){
         var curve = this[ name ] = two.makeCurve( this.points, true );

@@ -5,6 +5,7 @@ var TWEEN = require('tween.js');
 var utils = require('./lib/utils');
 var player = require('./lib/player');
 var road = require('./lib/road');
+var stats = require('./lib/stats');
 var course = require('./lib/course');
 var config = window.config = require('./config');
 var app = window.app = window.app || {};
@@ -26,12 +27,18 @@ utils.domready( function(){
   , variance:         config.variance
   });
 
+  app.stats = stats('[data-role="stats"]');
+
   app.player = player({ renderer: two });
   app.player.x = window.innerWidth / 2;
   app.player.y = window.innerHeight / 2;
 
   course.on( 'change', function( value ){
     app.road.bow( value );
+  });
+
+  uInput.on( 'horizontal', function( value ){
+    app.stats.set( 'hInput', value );
   });
 
   var tick = function( frameCount, timeDelta ){

@@ -22,8 +22,8 @@ var uInput = {
 , vInput: 0
 , currT:  0
 , rotationMultiplier: 10
-// , calibration: 0
-, calibration: 0.5
+, calibration: 0
+// , calibration: 0.5
 
 , onDeviceOrientation: function( e ){
     this.hInput = Math.sin(
@@ -91,10 +91,10 @@ utils.extend( uInput, EventEmitter.prototype );
 uInput = Object.create( uInput );
 EventEmitter.call( uInput );
 
-utils.key.bind( 'a', uInput.onLeftInputDown.bind( uInput ), 'keydown' );
-utils.key.bind( 'a', uInput.onLeftInputUp.bind( uInput ), 'keyup' );
-utils.key.bind( 'd', uInput.onRightInputDown.bind( uInput ), 'keydown' );
-utils.key.bind( 'd', uInput.onRightInputUp.bind( uInput ), 'keyup' );
+utils.key.bind( 'a', uInput.onLeftInputDown.bind( uInput ),   'keydown' );
+utils.key.bind( 'a', uInput.onLeftInputUp.bind( uInput ),     'keyup' );
+utils.key.bind( 'd', uInput.onRightInputDown.bind( uInput ),  'keydown' );
+utils.key.bind( 'd', uInput.onRightInputUp.bind( uInput ),    'keyup' );
 
 window.addEventListener(
   'deviceorientation'
