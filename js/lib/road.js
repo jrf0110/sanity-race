@@ -14,6 +14,7 @@ module.exports = function( options ){
   , lineColor:        'yellow'
   , lineWidth:        16
   , velocity:         0.0125
+  , gutter:          -50
   });
 
   var two = options.renderer;
@@ -60,8 +61,8 @@ module.exports = function( options ){
     }
 
   , initRoadLines: function(){
-      var gutter = - 10;
-      var length = two.height / ( options.nVertices + gutter );
+      var length = two.height / ( options.nRoadLines + options.gutter );
+
       this.lines = [];
       utils.range( options.nRoadLines ).forEach( function( i ){
         var dash = two.makeLine( 0, - length, 0, length );

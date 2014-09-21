@@ -9,11 +9,11 @@ module.exports = {
 , roadWidth: 250
 
   // Number of vertices in the track
-, nVertices: 48
+, nVertices: 24
 
   // Number of vertices outside the track
   // NOTE: needs to be an even number (n/2 for top, n/2 for bottom)
-, nOutsideVertices: 16
+, nOutsideVertices: 6
 
   // Max horizontal distance between two vertices
 , variance: 150

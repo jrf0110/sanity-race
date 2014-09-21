@@ -15,7 +15,7 @@ app.input = uInput;
 utils.domready( function(){
   var two = window.two = new Two({
     fullscreen: true
-  , type: Two.Types.svg
+  , type: Two.Types.canvas
   }).appendTo( document.body );
 
   app.road = road({
@@ -28,16 +28,23 @@ utils.domready( function(){
 
   app.player = player({ renderer: two });
   app.player.x = window.innerWidth / 2;
+  app.player.y = window.innerHeight / 2;
 
   course.on( 'change', function( value ){
     app.road.bow( value );
   });
 
-  two.bind('update', function( frameCount, timeDelta ){
+  var tick = function( frameCount, timeDelta ){
+    requestAnimationFrame( tick.bind( null, frameCount++ ) );
+
     app.player.x += (uInput.hInput * config.hSpeed) + course.getForce();
 
     app.road.update( frameCount, timeDelta );
     app.player.update( frameCount, timeDelta );
+
+    two.update();
     TWEEN.update();
-  }).play();
+  };
+
+  requestAnimationFrame( tick.bind( null, 0 ) );
 });
