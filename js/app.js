@@ -7,6 +7,7 @@ var player = require('./lib/player');
 var road = require('./lib/road');
 var stats = require('./lib/stats');
 var course = require('./lib/course');
+var loop = require('./lib/loop');
 var config = window.config = require('./config');
 var app = window.app = window.app || {};
 var uInput = window.uInput = require('./lib/user-input');
@@ -27,7 +28,7 @@ utils.domready( function(){
   , variance:         config.variance
   });
 
-  app.stats = stats('[data-role="stats"]');
+  // app.stats = stats('[data-role="stats"]');
 
   app.player = player({ renderer: two });
   app.player.x = window.innerWidth / 2;
@@ -37,20 +38,22 @@ utils.domready( function(){
     app.road.bow( value );
   });
 
-  uInput.on( 'horizontal', function( value ){
-    app.stats.set( 'hInput', value );
+  // uInput.on( 'horizontal', function( value ){
+  //   app.stats.set( 'hInput', value );
+  // });
+
+  loop.on( 'tick', function( i ){
+    app.player.x += (uInput.hInput * config.hSpeed) + course.getForce();
+    TWEEN.update();
   });
 
   var tick = function( frameCount, timeDelta ){
     requestAnimationFrame( tick.bind( null, frameCount++ ) );
 
-    app.player.x += (uInput.hInput * config.hSpeed) + course.getForce();
-
     app.road.update( frameCount, timeDelta );
     app.player.update( frameCount, timeDelta );
 
     two.update();
-    TWEEN.update();
   };
 
   requestAnimationFrame( tick.bind( null, 0 ) );

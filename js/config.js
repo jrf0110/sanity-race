@@ -19,4 +19,10 @@ module.exports = {
 , variance: 150
 
 , hSpeed: 4.9
+
+, logicLoopInterval: 20
+
+, input: {
+    maxAlphaOffset: 10
+  }
 };

@@ -16,9 +16,12 @@ module.exports = function( $el, options ){
     }
 
   , set: function( key, val ){
+      if ( this.attr[ key ] === val ) return this;
+
       this.attr[ key ] = val;
       this.emit( 'change', key, val, this );
       this.emit( key + ':change', val, this );
+
       return this;
     }
   }, events.EventEmitter );

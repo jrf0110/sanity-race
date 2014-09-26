@@ -1,20 +1,9 @@
-// v = ( c * (t / d)^2 ) + b
-// v - b = c * (t / d)^2
-// ( v - b ) / c = ( t / d )^2
-// sqrt( (v - b) / c ) = t / d
-// t = d * sqrt( (v - b ) / c )
-
-// f( 80 ) = 1
-// f( 90 ) = 0
-// f( 100 ) = -1
-// f(x) = sin( (90 + x) * y )
-// f(0) = 0
-// f(-10) = 1
-// f(10) = -1
-// 
-// -1 = sin(100) * y
+//    0
+//   / \
+// 10   350
 
 var EventEmitter = require('events').EventEmitter;
+var config = require('../config');
 var utils = require('./utils');
 
 var uInput = {
@@ -26,10 +15,19 @@ var uInput = {
 // , calibration: 0.5
 
 , onDeviceOrientation: function( e ){
+    var alpha = e.alpha;
+
+    if ( alpha < 180 ){
+      alpha = Math.min( alpha, config.input.maxAlphaOffset );
+    } else {
+      alpha = Math.max( alpha, 360 - config.input.maxAlphaOffset );
+    }
+
     this.hInput = Math.sin(
-      ( Math.PI * ( e.alpha + this.calibration ) * this.rotationMultiplier ) / 180
+      ( Math.PI * ( alpha + this.calibration ) * this.rotationMultiplier ) / 180
     ) * -1;
-    this.emit( 'horizontal', this.hInput );
+
+    this.emit( 'horizontal', alpha /*this.hInput*/ );
   }
 
 , applyInputState: function( direction ){
