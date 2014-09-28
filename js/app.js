@@ -1,16 +1,14 @@
-window._ = require('lodash');
+window._    = require('lodash');
 
-var Two = require('two.js');
-var TWEEN = require('tween.js');
-var utils = require('./lib/utils');
-var player = require('./lib/player');
-var road = require('./lib/road');
-var stats = require('./lib/stats');
-var course = require('./lib/course');
-var loop = require('./lib/loop');
-var config = window.config = require('./config');
-var app = window.app = window.app || {};
-var uInput = window.uInput = require('./lib/user-input');
+var Two     = require('two.js');
+var TWEEN   = require('tween.js');
+var utils   = require('./lib/utils');
+var course  = require('./lib/course');
+var loop    = require('./lib/loop');
+
+var config  = window.config = require('./config');
+var app     = window.app = window.app || {};
+var uInput  = window.uInput = require('./lib/user-input');
 
 app.input = uInput;
 
@@ -20,7 +18,7 @@ utils.domready( function(){
   , type: Two.Types.canvas
   }).appendTo( document.body );
 
-  app.road = road({
+  app.road = require('./lib/road')({
     renderer:         two
   , width:            config.roadWidth
   , nVertices:        config.nVertices
@@ -30,9 +28,9 @@ utils.domready( function(){
 
   app.flasher = require('./lib/flasher')('.flasher');
 
-  // app.stats = stats('[data-role="stats"]');
+  // app.stats = require('./lib/stats')('[data-role="stats"]');
 
-  app.player = player({ renderer: two });
+  app.player = require('./lib/player')({ renderer: two });
   app.player.x = window.innerWidth / 2;
   app.player.y = window.innerHeight / 2;
 
@@ -46,7 +44,6 @@ utils.domready( function(){
 
   loop.on( 'tick', function( i ){
     app.player.x += (uInput.hInput * config.hSpeed) + course.getForce();
-    TWEEN.update();
   });
 
   var tick = function( frameCount, timeDelta ){
@@ -56,6 +53,7 @@ utils.domready( function(){
     app.player.update( frameCount, timeDelta );
 
     two.update();
+    TWEEN.update();
   };
 
   requestAnimationFrame( tick.bind( null, 0 ) );
