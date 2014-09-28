@@ -28,6 +28,8 @@ utils.domready( function(){
   , variance:         config.variance
   });
 
+  app.flasher = require('./lib/flasher')('.flasher');
+
   // app.stats = stats('[data-role="stats"]');
 
   app.player = player({ renderer: two });

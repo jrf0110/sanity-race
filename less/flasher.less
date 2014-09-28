@@ -1,0 +1,31 @@
+/////////////
+// Flasher //
+/////////////
+
+.flasher {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  > .msg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 50%;
+    padding: 10px 20px;
+    font-family: @flasher-font-family;
+    font-size: @flasher-font-size;
+    color: #FFAD9F;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity linear 0.2s, transform linear 0.2s;
+
+    &.out {
+      opacity: 0;
+      transform: scale(2);
+    }
+  }
+}
