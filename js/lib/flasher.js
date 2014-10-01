@@ -21,13 +21,14 @@ module.exports = function( $el, options ){
 
       var $msg = utils.dom('<div class="msg out" />').html( text );
       $el.append( $msg );
+      setTimeout( function(){
+        $msg.css({
+          marginTop:  -($msg.outerHeight() / 2) + 'px'
+        , marginLeft: -($msg.outerWidth() / 2) + 'px'
+        });
 
-      $msg.css({
-        marginTop:  -($msg.height() / 2) + 'px'
-      , marginLeft: -($msg.width() / 2) + 'px'
-      });
-
-      setTimeout( $msg.removeClass.bind( $msg, 'out' ), 1 );
+        $msg.removeClass('out');
+      }, 1 );
 
       return this;
     }

@@ -1,7 +1,3 @@
-//    0
-//   / \
-// 10   350
-
 var EventEmitter = require('events').EventEmitter;
 var config = require('../config');
 var utils = require('./utils');
@@ -27,7 +23,7 @@ var uInput = {
       ( Math.PI * ( alpha + this.calibration ) * this.rotationMultiplier ) / 180
     ) * -1;
 
-    this.emit( 'horizontal', alpha /*this.hInput*/ );
+    this.emit( 'horizontal', this.hInput );
   }
 
 , applyInputState: function( direction ){

@@ -18,7 +18,7 @@ module.exports = {
   // Max horizontal distance between two vertices
 , variance: 150
 
-, hSpeed: 4.9
+, hSpeed: 5.1
 
 , logicLoopInterval: 20
 

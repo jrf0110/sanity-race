@@ -18,5 +18,21 @@ module.exports = function( options ){
   , update: function(){
       this.polygon.translation.set( this.x, this.y );
     }
+
+  , reset: function(){
+      this.x = window.innerWidth / 2;
+      this.y = window.innerHeight / 2;
+      return this;
+    }
+
+  , show: function(){
+      this.y = window.innerHeight / 2;
+      return this;
+    }
+
+  , hide: function(){
+      this.y = -1000;
+      return this;
+    }
   }).init();
 };
