@@ -23,6 +23,6 @@ module.exports = {
 , logicLoopInterval: 20
 
 , input: {
-    maxAlphaOffset: 10
+    maxOffset: 10
   }
 };

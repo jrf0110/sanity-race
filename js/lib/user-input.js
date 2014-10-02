@@ -11,17 +11,15 @@ var uInput = {
 // , calibration: 0.5
 
 , onDeviceOrientation: function( e ){
-    var alpha = e.alpha;
+    var value = e.beta;
 
-    if ( alpha < 180 ){
-      alpha = Math.min( alpha, config.input.maxAlphaOffset );
+    if ( value < 0 ){
+      value = Math.max( value, -config.input.maxOffset );
     } else {
-      alpha = Math.max( alpha, 360 - config.input.maxAlphaOffset );
+      value = Math.min( value, config.input.maxOffset );
     }
 
-    this.hInput = Math.sin(
-      ( Math.PI * ( alpha + this.calibration ) * this.rotationMultiplier ) / 180
-    ) * -1;
+    this.hInput = value / config.input.maxOffset;
 
     this.emit( 'horizontal', this.hInput );
   }
