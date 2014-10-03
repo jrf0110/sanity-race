@@ -8,7 +8,41 @@ var uInput = {
 , currT:  0
 , rotationMultiplier: 10
 , calibration: 0
-// , calibration: 0.5
+, isDisabled: false
+
+, disable: function(){
+    this.isDisabled = true;
+    if ( this.tween ) this.tween.stop();
+    return this;
+  }
+
+, enable: function(){
+    this.isDisabled = false;
+    if ( this.tween ) this.tween.start();
+    return this;
+  }
+
+, reset: function(){
+    if ( this.tween ) this.tween.stop();
+    this.hInput = 0;
+    this.vInput = 0;
+  }
+
+, tweenTo: function( value ){
+    if ( this.isDisabled ) return;
+    if ( this.tween ) this.tween.stop();
+
+    console.log('Tween to', value);
+    this.tween = new utils.Tween( this )
+      .to( { hInput: value }, 1000 )
+      .easing( utils.Easing.Quadratic.In )
+      .onUpdate( function(){
+        uInput.emit( 'horizontal', this.hInput, uInput );
+      })
+      .start();
+
+    return this;
+  }
 
 , onDeviceOrientation: function( e ){
     var value = e.beta;
@@ -22,21 +56,6 @@ var uInput = {
     this.hInput = value / config.input.maxOffset;
 
     this.emit( 'horizontal', this.hInput, uInput );
-  }
-
-, tweenTo: function( value ){
-    if ( this.tween ) this.tween.stop();
-
-    console.log('Tween to', value);
-    this.tween = new utils.Tween( this )
-      .to( { hInput: value }, 1000 )
-      .easing( utils.Easing.Quadratic.In )
-      .onUpdate( function(){
-        uInput.emit( 'horizontal', this.hInput, uInput );
-      })
-      .start();
-
-    return this;
   }
 
 , onLeftInputDown: function(){

@@ -13,9 +13,10 @@ course.getForce = function(){
 course.reset = function(){
   if ( this.interval ){
     clearInterval( this.interval );
-    this.tween.stop();
     this.interval = null;
   }
+
+  if ( this.tween ) this.tween.stop();
 
   this.interval = setInterval( function(){
     course.tween = new TWEEN.Tween( course )

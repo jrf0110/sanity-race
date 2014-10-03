@@ -16,6 +16,7 @@ app.input = uInput;
 app.reset = function(){
   app.player.reset();
   course.reset();
+  uInput.reset();
   app.flasher.hide();
 };
 
@@ -23,10 +24,13 @@ game.on( 'start-screen', function(){
   app.flasher.msg('Sanity Race!');
   app.player.hide();
   course.reset();
+  uInput.reset();
+  uInput.disable();
   setTimeout( game.state.bind( game, 'racing' ), 2000 );
 });
 
 game.on( 'racing', function(){
+  uInput.enable();
   app.player.reset();
   app.player.show();
   app.flasher.hide();
