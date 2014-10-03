@@ -1,5 +1,7 @@
 /**
  * Controls the overall game state
+ * Basically an event emitter that will not emit
+ * if the current state === to the transition state
  */
 
 var utils = require('./utils');
@@ -13,20 +15,11 @@ var game = {
 , states: {}
 };
 
-// game.registerState = function( state, callback ){
-//   game.states[ state ] = callback;
-//   return this;
-// };
-
 game.isState = function( state ){
   return this.current === state;
 };
 
 game.state = function( state ){
-  // if ( !game.states[ state ] ){
-  //   throw new Error('Invalid state `' + state + '`');
-  // }
-
   if ( this.current === state ) return this;
 
   this.emit( state, this.current, state, this );
