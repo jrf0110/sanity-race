@@ -21,61 +21,46 @@ var uInput = {
 
     this.hInput = value / config.input.maxOffset;
 
-    this.emit( 'horizontal', this.hInput );
+    this.emit( 'horizontal', this.hInput, uInput );
   }
 
-, applyInputState: function( direction ){
-    if ( direction === 'left' || direction === 'right' ){
-      this.hInput = utils.easing.easeOutQuad(
-        this.currT, 0, direction === 'left' ? -1 : 1, 2000
-      );
-    }
+, tweenTo: function( value ){
+    if ( this.tween ) this.tween.stop();
 
-    this.currT += 10;
+    console.log('Tween to', value);
+    this.tween = new utils.Tween( this )
+      .to( { hInput: value }, 1000 )
+      .easing( utils.Easing.Quadratic.In )
+      .onUpdate( function(){
+        uInput.emit( 'horizontal', this.hInput, uInput );
+      })
+      .start();
+
+    return this;
   }
 
 , onLeftInputDown: function(){
-    this.hInput = -1;
-    this.emit( 'horizontal', this.hInput );
-    // if ( !this.applyInputStateInterval ){
-    //   this.currT = utils.easing.timings.easeOutQuad(
-    //     this.hInput, 0, -1, 2000
-    //   );
+    if ( this.leftDown ) return;
 
-    //   this.applyInputStateInterval = setInterval(
-    //     this.applyInputState.bind( this, 'left' ), 10
-    //   );
-    // }
+    this.leftDown = true;
+    this.tweenTo(-1);
   }
 
 , onLeftInputUp: function(){
-    this.hInput = 0;
-    this.emit( 'horizontal', this.hInput );
-    // if ( this.applyInputStateInterval ){
-    //   clearInterval( this.applyInputStateInterval );
-    // }
+    this.leftDown = false;
+    this.tweenTo(0);
   }
 
 , onRightInputDown: function(){
-    this.hInput = 1;
-    this.emit( 'horizontal', this.hInput );
-    // if ( !this.applyInputStateInterval ){
-    //   this.currT = utils.easing.timings.easeOutQuad(
-    //     this.hInput, 0, 1, 2000
-    //   );
+    if ( this.rightDown ) return;
 
-    //   this.applyInputStateInterval = setTimeout(
-    //     this.applyInputState.bind( this, 'right' ), 10
-    //   );
-    // }
+    this.rightDown = true;
+    this.tweenTo(1);
   }
 
 , onRightInputUp: function(){
-    this.hInput = 0;
-    this.emit( 'horizontal', this.hInput );
-    // if ( this.applyInputStateInterval ){
-    //   clearInterval( this.applyInputStateInterval );
-    // }
+    this.rightDown = false;
+    this.tweenTo(0);
   }
 };
 
@@ -88,9 +73,21 @@ utils.key.bind( 'a', uInput.onLeftInputUp.bind( uInput ),     'keyup' );
 utils.key.bind( 'd', uInput.onRightInputDown.bind( uInput ),  'keydown' );
 utils.key.bind( 'd', uInput.onRightInputUp.bind( uInput ),    'keyup' );
 
+// Only add device orientation if it's a device that likely
+// supports free rotation
+var deviceCheck = function( e ){
+  if ( e.alpha ){
+    window.addEventListener(
+      'deviceorientation'
+    , uInput.onDeviceOrientation.bind( uInput )
+    );
+  }
+
+  window.removeEventListener( deviceCheck );
+};
+
 window.addEventListener(
-  'deviceorientation'
-, uInput.onDeviceOrientation.bind( uInput )
+  'deviceorientation', deviceCheck
 );
 
 module.exports = uInput;

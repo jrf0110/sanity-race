@@ -54,7 +54,7 @@ utils.domready( function(){
 
   app.flasher = require('./lib/flasher')('.flasher');
 
-  // app.stats = require('./lib/stats')('[data-role="stats"]');
+  app.stats = require('./lib/stats')('[data-role="stats"]');
 
   app.player = require('./lib/player')({ renderer: two });
   
@@ -64,9 +64,9 @@ utils.domready( function(){
     app.road.bow( value );
   });
 
-  // uInput.on( 'horizontal', function( value ){
-  //   app.stats.set( 'hInput', value );
-  // });
+  uInput.on( 'horizontal', function( value ){
+    app.stats.set( 'hInput', value );
+  });
 
   var xDeath = [
     (window.innerWidth / 2) - (config.roadWidth / 2)

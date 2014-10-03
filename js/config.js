@@ -24,5 +24,6 @@ module.exports = {
 
 , input: {
     maxOffset: 10
+  , timeToMax: 1000
   }
 };
