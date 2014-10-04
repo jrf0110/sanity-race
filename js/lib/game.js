@@ -6,10 +6,6 @@
 
 var utils = require('./utils');
 
-var Inherit = [
-  require('events').EventEmitter
-];
-
 var game = {
   current: null
 , states: {}
@@ -29,12 +25,7 @@ game.state = function( state ){
   return this;
 };
 
-Inherit.forEach( function( Ctr ){
-  utils.extend( game, Ctr.prototype );
-});
-
-game = module.exports = Object.create( game );
-
-Inherit.forEach( function( Ctr ){
-  Ctr.call( game );
-});
+game = module.exports = Object.create(
+  game
+, require('events').EventEmitter
+);
