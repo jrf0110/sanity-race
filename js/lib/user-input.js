@@ -32,7 +32,6 @@ var uInput = {
     if ( this.isDisabled ) return;
     if ( this.tween ) this.tween.stop();
 
-    console.log('Tween to', value);
     this.tween = new utils.Tween( this )
       .to( { hInput: value }, 1000 )
       .easing( utils.Easing.Quadratic.In )

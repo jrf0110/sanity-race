@@ -20,7 +20,7 @@ course.reset = function(){
 
   this.interval = setInterval( function(){
     course.tween = new TWEEN.Tween( course )
-                    .to({ curvature: utils.random( -150, 150 ) }, 2800 )
+                    .to({ curvature: utils.random( -170, 170 ) }, 1000 )
                     .onUpdate( function(){
                       course.emit( 'change', this.curvature, course );
                     })

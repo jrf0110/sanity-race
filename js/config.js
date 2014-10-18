@@ -6,10 +6,10 @@ module.exports = {
   // Initial Modifier for user input - so start at the center
 , im: 180
 
-, roadWidth: 250
+, roadWidth: 180
 
   // Number of vertices in the track
-, nVertices: 24
+, nVertices: 12
 
   // Number of vertices outside the track
   // NOTE: needs to be an even number (n/2 for top, n/2 for bottom)
@@ -20,7 +20,7 @@ module.exports = {
 
 , hSpeed: 5.1
 
-, logicLoopInterval: 20
+, logicLoopInterval: 24
 
 , input: {
     maxOffset: 10

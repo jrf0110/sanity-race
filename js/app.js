@@ -87,7 +87,9 @@ utils.domready( function(){
   });
 
   var tick = function( frameCount, timeDelta ){
-    requestAnimationFrame( tick.bind( null, frameCount++ ) );
+    requestAnimationFrame(
+      setTimeout.bind( null, tick.bind( null, frameCount++ ), 1000 / 60 )
+    );
 
     app.road.update( frameCount, timeDelta );
     app.player.update( frameCount, timeDelta );
