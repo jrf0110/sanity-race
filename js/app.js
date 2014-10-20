@@ -47,7 +47,7 @@ utils.domready( function(){
 
   app.flasher = require('./lib/flasher')('.flasher');
 
-  // app.stats = require('./lib/stats')('[data-role="stats"]');
+  app.stats = require('./lib/stats')('[data-role="stats"]');
   
   game.state('start-screen');
 
@@ -69,7 +69,7 @@ utils.domready( function(){
     }
 
     // app.stats.set( 'hInput', uInput.hInput );
-    // app.stats.set( 'score', score.value );
+    if ( i % 25 === 0 ) app.stats.set( 'score', score.value );
   });
 
   var tick = function( frameCount, timeDelta ){
