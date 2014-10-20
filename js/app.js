@@ -15,6 +15,9 @@ var uInput  = window.uInput = require('./lib/user-input');
 app.input = uInput;
 app.score = score;
 
+app.road = require('./lib/road');
+app.player = require('./lib/player')
+
 game.on( 'start-screen', function(){
   app.flasher.msg('Sanity Race!');
   app.player.hide();
@@ -41,19 +44,10 @@ game.on( 'death', function(){
 });
 
 utils.domready( function(){
-  app.road = require('./lib/road')({
-    renderer:         canvas
-  , width:            config.roadWidth
-  , nVertices:        config.nVertices
-  , nOutsideVertices: config.nOutsideVertices
-  , variance:         config.variance
-  });
 
   app.flasher = require('./lib/flasher')('.flasher');
 
   app.stats = require('./lib/stats')('[data-role="stats"]');
-
-  app.player = require('./lib/player')({ renderer: canvas });
   
   game.state('start-screen');
 
