@@ -6,7 +6,7 @@ module.exports = {
   // Initial Modifier for user input - so start at the center
 , im: 180
 
-, roadWidth: 180
+, roadWidth: 220
 
   // Number of vertices in the track
 , nVertices: 12

@@ -4,10 +4,11 @@ var utils = require('./utils');
 
 var course = {};
 
+course.difficulty = 1;
 course.curvature = 0;
 
 course.getForce = function(){
-  return this.curvature * -0.04;
+  return this.curvature * -0.035;
 };
 
 course.reset = function(){
@@ -20,7 +21,7 @@ course.reset = function(){
 
   this.interval = setInterval( function(){
     course.tween = new TWEEN.Tween( course )
-                    .to({ curvature: utils.random( -170, 170 ) }, 1000 )
+                    .to({ curvature: utils.random( -150, 150 ) }, 1000 )
                     .onUpdate( function(){
                       course.emit( 'change', this.curvature, course );
                     })

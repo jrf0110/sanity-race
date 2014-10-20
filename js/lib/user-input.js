@@ -33,7 +33,7 @@ var uInput = {
     if ( this.tween ) this.tween.stop();
 
     this.tween = new utils.Tween( this )
-      .to( { hInput: value }, 1000 )
+      .to( { hInput: value }, 500 )
       .easing( utils.Easing.Quadratic.In )
       .onUpdate( function(){
         uInput.emit( 'horizontal', this.hInput, uInput );

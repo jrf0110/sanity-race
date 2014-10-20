@@ -3,6 +3,7 @@ window._    = require('lodash');
 var Two     = require('two.js');
 var TWEEN   = require('tween.js');
 var utils   = require('./lib/utils');
+var canvas  = require('./lib/canvas')();
 var course  = require('./lib/course');
 var loop    = require('./lib/loop');
 var game    = require('./lib/game');
@@ -41,13 +42,13 @@ game.on( 'death', function(){
 });
 
 utils.domready( function(){
-  var two = window.two = new Two({
-    fullscreen: true
-  , type: Two.Types.canvas
-  }).appendTo( document.body );
+  // var two = window.two = new Two({
+  //   fullscreen: true
+  // , type: Two.Types.canvas
+  // }).appendTo( document.body );
 
   app.road = require('./lib/road')({
-    renderer:         two
+    renderer:         canvas
   , width:            config.roadWidth
   , nVertices:        config.nVertices
   , nOutsideVertices: config.nOutsideVertices
@@ -58,7 +59,7 @@ utils.domready( function(){
 
   app.stats = require('./lib/stats')('[data-role="stats"]');
 
-  app.player = require('./lib/player')({ renderer: two });
+  app.player = require('./lib/player')({ renderer: canvas });
   
   game.state('start-screen');
 
@@ -67,8 +68,8 @@ utils.domready( function(){
   });
 
   var xDeath = [
-    (window.innerWidth / 2) - (config.roadWidth / 2)
-  , (window.innerWidth / 2) + (config.roadWidth / 2)
+    (window.innerWidth / 2) - (app.road.options.width / 2)
+  , (window.innerWidth / 2) + (app.road.options.width / 2)
   ];
 
   loop.on( 'tick', function( i ){
@@ -85,13 +86,13 @@ utils.domready( function(){
 
   var tick = function( frameCount, timeDelta ){
     requestAnimationFrame(
-      setTimeout.bind( null, tick.bind( null, frameCount++ ), 1000 / 60 )
+      setTimeout.bind( null, tick.bind( null, ++frameCount ), 1000 / 60 )
     );
 
-    app.road.update( frameCount, timeDelta );
-    app.player.update( frameCount, timeDelta );
+    canvas.clear();
+    app.road.update( canvas, frameCount, timeDelta );
+    app.player.update( canvas, frameCount, timeDelta );
 
-    two.update();
     TWEEN.update();
   };
 

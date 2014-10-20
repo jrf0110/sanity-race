@@ -10,13 +10,16 @@ module.exports = function( options ){
   , color: 'tomato'
 
   , init: function(){
-      this.polygon = options.renderer.makeCircle( 0, 0, this.size );
-      this.polygon.fill = this.color;
+      // this.polygon = options.renderer.makeCircle( 0, 0, this.size );
+      // this.polygon.fill = this.color;
       return this;
     }
 
-  , update: function(){
-      this.polygon.translation.set( this.x, this.y );
+  , update: function( canvas, i, delta ){
+      canvas.ctx.beginPath();
+      canvas.ctx.moveTo( 0, 0 );
+      canvas.circle( this.x, this.y, this.size, this.color );
+      canvas.ctx.closePath();
     }
 
   , reset: function(){
