@@ -26,4 +26,4 @@ module.exports = Object.create({
     this.y = -1000;
     return this;
   }
-})
+});

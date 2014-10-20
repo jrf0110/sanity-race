@@ -16,7 +16,7 @@ app.input = uInput;
 app.score = score;
 
 app.road = require('./lib/road');
-app.player = require('./lib/player')
+app.player = require('./lib/player');
 
 game.on( 'start-screen', function(){
   app.flasher.msg('Sanity Race!');
@@ -47,7 +47,7 @@ utils.domready( function(){
 
   app.flasher = require('./lib/flasher')('.flasher');
 
-  app.stats = require('./lib/stats')('[data-role="stats"]');
+  // app.stats = require('./lib/stats')('[data-role="stats"]');
   
   game.state('start-screen');
 
@@ -68,8 +68,8 @@ utils.domready( function(){
       game.state('death');
     }
 
-    app.stats.set( 'hInput', uInput.hInput );
-    app.stats.set( 'score', score.value );
+    // app.stats.set( 'hInput', uInput.hInput );
+    // app.stats.set( 'score', score.value );
   });
 
   var tick = function( frameCount, timeDelta ){
