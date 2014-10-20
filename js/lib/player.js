@@ -10,8 +10,6 @@ module.exports = function( options ){
   , color: 'tomato'
 
   , init: function(){
-      // this.polygon = options.renderer.makeCircle( 0, 0, this.size );
-      // this.polygon.fill = this.color;
       return this;
     }
 

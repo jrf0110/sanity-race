@@ -1,6 +1,5 @@
 window._    = require('lodash');
 
-var Two     = require('two.js');
 var TWEEN   = require('tween.js');
 var utils   = require('./lib/utils');
 var canvas  = require('./lib/canvas')();
@@ -42,11 +41,6 @@ game.on( 'death', function(){
 });
 
 utils.domready( function(){
-  // var two = window.two = new Two({
-  //   fullscreen: true
-  // , type: Two.Types.canvas
-  // }).appendTo( document.body );
-
   app.road = require('./lib/road')({
     renderer:         canvas
   , width:            config.roadWidth
